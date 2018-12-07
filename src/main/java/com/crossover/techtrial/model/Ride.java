@@ -4,6 +4,8 @@
 package com.crossover.techtrial.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,147 +14,114 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Positive;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "ride")
-public class Ride implements Serializable{
+public class Ride implements Serializable {
 
-  private static final long serialVersionUID = 9097639215351514001L;
+	public Ride() {
+	}
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
+	public Ride(Long id, LocalDateTime startTime, LocalDateTime endTime, Double distance, Person driver, Person rider) {
+		this.id = id;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.distance = distance;
+		this.driver = driver;
+		this.rider = rider;
+	}
 
-  @NotNull
-  @Column(name = "start_time")
-  String startTime;
-  
-  @NotNull
-  @Column(name = "end_time")
-  String endTime;
-  
-  @Column(name = "distance")
-  Long distance;
-  
-  @ManyToOne
-  @JoinColumn(name = "driver_id", referencedColumnName = "id")
-  Person driver;
-  
-  @ManyToOne
-  @JoinColumn(name = "rider_id", referencedColumnName = "id")
-  Person rider;
+	private static final long serialVersionUID = 9097639215351514001L;
 
-  public Long getId() {
-    return id;
-  }
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+	@NotNull
+	@PastOrPresent
+	@Column(name = "start_time")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private LocalDateTime startTime;
 
-  public String getStartTime() {
-    return startTime;
-  }
+	@NotNull
+	@PastOrPresent
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	@Column(name = "end_time")
+	private LocalDateTime endTime;
 
-  public void setStartTime(String startTime) {
-    this.startTime = startTime;
-  }
+	@Positive
+	@Column(name = "distance")
+	@Digits(integer = 6, fraction = 2)
+	private Double distance;
 
-  public String getEndTime() {
-    return endTime;
-  }
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "driver_id", referencedColumnName = "id")
+	Person driver;
 
-  public void setEndTime(String endTime) {
-    this.endTime = endTime;
-  }
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "rider_id", referencedColumnName = "id")
+	Person rider;
 
-  public Long getDistance() {
-    return distance;
-  }
+	public Long getId() {
+		return id;
+	}
 
-  public void setDistance(Long distance) {
-    this.distance = distance;
-  }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-  public Person getDriver() {
-    return driver;
-  }
+	public LocalDateTime getStartTime() {
+		return startTime;
+	}
 
-  public void setDriver(Person driver) {
-    this.driver = driver;
-  }
+	public void setStartTime(LocalDateTime startTime) {
+		this.startTime = startTime;
+	}
 
-  public Person getRider() {
-    return rider;
-  }
+	public LocalDateTime getEndTime() {
+		return endTime;
+	}
 
-  public void setRider(Person rider) {
-    this.rider = rider;
-  }
-  
-  
+	public void setEndTime(LocalDateTime endTime) {
+		this.endTime = endTime;
+	}
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((distance == null) ? 0 : distance.hashCode());
-    result = prime * result + ((driver == null) ? 0 : driver.hashCode());
-    result = prime * result + ((endTime == null) ? 0 : endTime.hashCode());
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((rider == null) ? 0 : rider.hashCode());
-    result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
-    return result;
-  }
+	public Double getDistance() {
+		return distance;
+	}
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Ride other = (Ride) obj;
-    if (distance == null) {
-      if (other.distance != null)
-        return false;
-    } else if (!distance.equals(other.distance))
-      return false;
-    if (driver == null) {
-      if (other.driver != null)
-        return false;
-    } else if (!driver.equals(other.driver))
-      return false;
-    if (endTime == null) {
-      if (other.endTime != null)
-        return false;
-    } else if (!endTime.equals(other.endTime))
-      return false;
-    if (id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!id.equals(other.id))
-      return false;
-    if (rider == null) {
-      if (other.rider != null)
-        return false;
-    } else if (!rider.equals(other.rider))
-      return false;
-    if (startTime == null) {
-      if (other.startTime != null)
-        return false;
-    } else if (!startTime.equals(other.startTime))
-      return false;
-    return true;
-  }
+	public void setDistance(Double distance) {
+		this.distance = distance;
+	}
 
-  @Override
-  public String toString() {
-    return "Ride [id=" + id + ", startTime=" + startTime + ", endTime=" + endTime + ", distance=" + distance + ", driver=" + driver + ", rider=" + rider + "]";
-  }
-  
-  
-  
+	public Person getDriver() {
+		return driver;
+	}
+
+	public void setDriver(Person driver) {
+		this.driver = driver;
+	}
+
+	public Person getRider() {
+		return rider;
+	}
+
+	public void setRider(Person rider) {
+		this.rider = rider;
+	}
+
+	@Override
+	public String toString() {
+		return "Ride [id=" + id + ", startTime=" + startTime + ", endTime=" + endTime + ", distance=" + distance
+				+ ", driver=" + driver + ", rider=" + rider + "]";
+	}
+
 }

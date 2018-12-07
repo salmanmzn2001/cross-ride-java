@@ -22,7 +22,7 @@ Prerequisites:
     Any IDE
     GIT
     Java 8
-    MySQL 5.6+
+    MySQL 5.6
 
 Development Environment:
   MySQL:
